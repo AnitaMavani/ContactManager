@@ -36,3 +36,14 @@
     transform: rotate(360deg);
   }
 }
+
+/*custom css*/
+.menu-item.active:after{
+  content: "";
+  border-bottom: 3px solid #ffffff;
+  width:100%;
+  position: absolute;
+  bottom: -16px;
+  left:0;
+  right: 0;
+}

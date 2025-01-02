@@ -1,26 +1,28 @@
 import React from 'react';
 import logo from './logo.svg';
+import { Routes, Route } from 'react-router-dom';
 import './App.css';
+import { Button, Typography, Container } from "@mui/material";
+import ProjectPage from './ProjectPage';
+import Home from "./pages/Home";
+import About from "./pages/About";
+import ContactForm from './pages/ContactForm';
+import Login from "./pages/Login";
+import Register from './pages/Register';
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <>
+      <Routes>
+        <Route path="/" element={<Home />} />
+        <Route path="/about" element={<About />} />
+        <Route path="/contact" element={<ContactForm />} />
+        <Route path="/login" element={<Login />} />
+        <Route path="/register" element={<Register />} />
+      </Routes>
+    </>
   );
+ 
 }
 
 export default App;
