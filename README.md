@@ -1,6 +1,4 @@
-#TypeFlowReactMaterial
-
-## React Material-UI Starter App
+## TypeFlowReactMaterial 
 
 This is a small React application built with TypeScript, Material-UI, and Create React App. It demonstrates basic usage of Material-UI components, React hooks, and TypeScript for type safety. The app currently includes a Contact page, Login, and Register pages, with routing set up for navigation between these pages.
 
