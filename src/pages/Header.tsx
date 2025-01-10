@@ -1,5 +1,5 @@
 import React from 'react';
-import { NavLink } from 'react-router-dom';
+import { NavLink, useNavigate } from 'react-router-dom';
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
 import Toolbar from '@mui/material/Toolbar';
@@ -9,6 +9,7 @@ import Menu from '@mui/material/Menu';
 import MenuIcon from '@mui/icons-material/Menu';
 import Button from '@mui/material/Button';
 import MenuItem from '@mui/material/MenuItem';
+import Auth from './Auth';
 
 const pages = [
   { name: 'Home', path: '/' },
@@ -18,13 +19,18 @@ const pages = [
 
 const Header: React.FC = () => {
   const [anchorElNav, setAnchorElNav] = React.useState<null | HTMLElement>(null);
-
+  const navigate = useNavigate(); 
   const handleOpenNavMenu = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorElNav(event.currentTarget);
   };
 
   const handleCloseNavMenu = () => {
     setAnchorElNav(null);
+  };
+
+   // Handle login/register click
+   const handleAuthPage = (isRegister: boolean) => {
+    navigate(isRegister ? '/register' : '/login');
   };
 
   return (
@@ -122,6 +128,7 @@ const Header: React.FC = () => {
             variant="contained"
             color="success"
             sx={{mr:2}}
+            onClick={() => handleAuthPage(false)} // Navigate to login
           >
             Login
           </Button>
@@ -131,6 +138,7 @@ const Header: React.FC = () => {
             variant="contained"
             color="success"
             sx={{mr:2}}
+            onClick={() => handleAuthPage(true)} // Navigate to login
           >
             Register
           </Button>

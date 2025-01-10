@@ -1,28 +1,37 @@
-import {useState} from 'react';
-interface FormState {
-    name: string;
-    email: string;
-    message:string;
-  }
-type ValidateFunction = (fields: FormState) => Record<string, string>;
+import { useState, useEffect } from 'react';
 
-const FormManager = (
-    initialState: FormState,
-    validateFields: ValidateFunction
-    ) => {
-        const [inputs, setInputs] = useState<FormState>(initialState);
-        const [errors, setErrors] = useState<Record<string, string>>({});
+type ValidationFunction<T> = (values: T) => Record<keyof T, string>;
 
-        const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-            const { name, value } = event.target;
-            setInputs((prev) => ({ ...prev, [name]: value }));
-          };
-    const validate = () => {
-        const validationErrors = validateFields(inputs);
-        setErrors(validationErrors);
-        return Object.keys(validationErrors).length === 0;
-      };
-    const resetForm = () => setInputs(initialState);
-    return { inputs, errors, handleChange, validate, resetForm };
-}
+const FormManager = <T extends Record<string, any>>(initialValues: T ) => {
+  const [inputs, setInputs] = useState<T>(initialValues);
+  const [errors, setErrors] = useState<Partial<Record<keyof T, string>>>({});
+
+  //Reset inputs when initialValues changes
+
+
+  const handleChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => {
+    const { name, value } = e.target;
+    setInputs((prev) => ({
+      ...prev,
+      [name]: value,
+    }));
+  };
+
+  const validate = (validationRules: ValidationFunction<T>): boolean => {
+    const validationErrors = validationRules(inputs);
+    const isValid = !Object.values(validationErrors).some((error) => error.trim() !== "");
+    setErrors(validationErrors); 
+    return isValid;
+};
+const resetForm = (newInitialValues: T) => {
+    setInputs(newInitialValues);
+    setErrors({});
+  };
+
+
+  return { inputs, errors, handleChange, validate, resetForm };
+};
+
 export default FormManager;
