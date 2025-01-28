@@ -1,22 +1,69 @@
-import React from "react";
-import { Box, TextField, Container, Button } from '@mui/material';
+import React, { useState } from "react";
+import { Box, TextField, Container, Button, Typography, List, ListItem, ListItemText, IconButton } from '@mui/material';
 import FormManager from "./FormManager";
 import Validation from "./Validation";
+import DeleteIcon from '@mui/icons-material/Delete';
+import EditIcon from '@mui/icons-material/Edit';
+
+type Contact = {
+  id: number;
+  name: String;
+  email: string;
+  message: String;
+}
 
 const ContactForm = () => {
   const initialState = { name: "", email: "", message: "" };
+  const [contacts, setContacts] = useState<Contact[]>([]);
+  const [formState, setFormState] = useState<Contact>({id:0, ...initialState});
+  const [isEditing, setIsEditing] = useState<Boolean>(false);
+  const [editId, setEditId] = useState<number | null>(null);
 
-  const { inputs, errors, handleChange, validate, resetForm } = FormManager(initialState);
+  const { inputs, errors, handleChange, validate, resetForm, setInputs } = FormManager(initialState);
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    console.log("before validation");
     if (validate(Validation)) {
-      console.log("Contact form submitted:", inputs);
+      console.log("validation inside");
+      if (isEditing && editId !== null) {
+        setContacts(contacts.map(contact => contact.id === editId ? { id: editId, ...inputs } as Contact : contact));
+        console.log("set contacts");
+        setIsEditing(false);
+        console.log("is editing false")
+        setEditId(null);
+        console.log("Contact edited:", inputs);
+      } else {
+        //const newContact: Contact = { id: contacts.length + 1, ...inputs };
+        setContacts([...contacts, { id: contacts.length + 1, ...inputs } as Contact]);
+        console.log("Contact added:", inputs);
+      }
+      
       resetForm(initialState);
     } else {
       console.log("Validation failed:", errors);
     }
+
+
+
+
   };
+
+  const handleDelete = (id:number) => {
+    setContacts(contacts.filter(contact => contact.id !== id));
+    console.log(`record ${id} deleted`);
+  }
+
+  const handleEdit = (id:number) => {
+    const contactToEdit = contacts.find(contact => contact.id === id);
+    console.log(contactToEdit);
+    if(contactToEdit) {
+      setInputs(contactToEdit);
+      setIsEditing(true);
+      setEditId(id);
+    }
+    console.log(`record ${id} edited`);
+  }
 
   return (
     <Container>
@@ -74,9 +121,25 @@ const ContactForm = () => {
             fullWidth
           />
             <Button variant="contained" type="submit" sx={{ marginTop: 2 }}>
-              Submit
+              {isEditing ? "Update" : "Submit"}
             </Button>
         </form>
+      </Box>
+      <Box mt={4}>
+        <Typography variant="h5" gutterBottom>Contact List</Typography>
+        <List>
+          {contacts.map((contact) => (
+              <ListItem key={contact.id}>
+                <ListItemText
+                  primary={`${contact.name} (${contact.email})`}
+                  secondary={contact.message}/>
+                  <IconButton  aria-label="edit" onClick={() => handleEdit(contact.id)}>
+                  <EditIcon />
+                  </IconButton>
+                  <IconButton aria-label="delete" onClick={() => handleDelete(contact.id)}><DeleteIcon /></IconButton>
+                  </ListItem>
+          ))}
+        </List>
       </Box>
     </Container>
   );
