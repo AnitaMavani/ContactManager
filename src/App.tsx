@@ -8,6 +8,7 @@ import Home from "./pages/Home";
 import About from "./pages/About";
 import ContactForm from './pages/ContactForm';
 import Auth from "./pages/Auth";
+import { AuthProvider } from './pages/AuthContext';
 
 function App() {
   return (

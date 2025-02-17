@@ -1,69 +1,84 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Box, TextField, Container, Button, Typography, List, ListItem, ListItemText, IconButton } from '@mui/material';
 import FormManager from "./FormManager";
 import Validation from "./Validation";
 import DeleteIcon from '@mui/icons-material/Delete';
 import EditIcon from '@mui/icons-material/Edit';
+import axios from 'axios';
 
 type Contact = {
   id: number;
-  name: String;
+  name: string;
   email: string;
-  message: String;
+  message: string;
 }
 
 const ContactForm = () => {
   const initialState = { name: "", email: "", message: "" };
   const [contacts, setContacts] = useState<Contact[]>([]);
-  const [formState, setFormState] = useState<Contact>({id:0, ...initialState});
-  const [isEditing, setIsEditing] = useState<Boolean>(false);
+  const [formState, setFormState] = useState<Contact>({ id: 0, ...initialState });
+  const [isEditing, setIsEditing] = useState<boolean>(false);
   const [editId, setEditId] = useState<number | null>(null);
 
   const { inputs, errors, handleChange, validate, resetForm, setInputs } = FormManager(initialState);
 
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  // Fetch contacts from the backend on component mount
+  useEffect(() => {
+    fetchContacts();
+  }, []);
+
+  const fetchContacts = async () => {
+    try {
+      const response = await axios.get('http://localhost:5001/api/contacts');
+      setContacts(response.data);
+    } catch (error) {
+      console.error('❌ Error fetching contacts:', error);
+    }
+  };
+
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    console.log("before validation");
     if (validate(Validation)) {
-      console.log("validation inside");
-      if (isEditing && editId !== null) {
-        setContacts(contacts.map(contact => contact.id === editId ? { id: editId, ...inputs } as Contact : contact));
-        console.log("set contacts");
-        setIsEditing(false);
-        console.log("is editing false")
-        setEditId(null);
-        console.log("Contact edited:", inputs);
-      } else {
-        //const newContact: Contact = { id: contacts.length + 1, ...inputs };
-        setContacts([...contacts, { id: contacts.length + 1, ...inputs } as Contact]);
-        console.log("Contact added:", inputs);
+      try {
+        if (isEditing && editId !== null) {
+          // Update existing contact
+          await axios.put(`http://localhost:5001/api/contacts/${editId}`, inputs);
+          console.log("Contact updated:", inputs);
+          setIsEditing(false);
+        } else {
+          // Add new contact
+          const response = await axios.post('http://localhost:5001/api/contacts', inputs);
+          console.log("Contact added:", response.data);
+        }
+        resetForm(initialState);
+        fetchContacts(); // Refresh the contact list
+      } catch (error) {
+        console.error('❌ Error submitting contact:', error);
       }
-      
-      resetForm(initialState);
     } else {
       console.log("Validation failed:", errors);
     }
-
-
-
-
   };
 
-  const handleDelete = (id:number) => {
-    setContacts(contacts.filter(contact => contact.id !== id));
-    console.log(`record ${id} deleted`);
-  }
+  const handleDelete = async (id: number) => {
+    try {
+      await axios.delete(`http://localhost:5001/api/contacts/${id}`);
+      console.log(`Record ${id} deleted`);
+      fetchContacts(); // Refresh the contact list
+    } catch (error) {
+      console.error('❌ Error deleting contact:', error);
+    }
+  };
 
-  const handleEdit = (id:number) => {
+  const handleEdit = (id: number) => {
     const contactToEdit = contacts.find(contact => contact.id === id);
-    console.log(contactToEdit);
-    if(contactToEdit) {
+    if (contactToEdit) {
       setInputs(contactToEdit);
       setIsEditing(true);
       setEditId(id);
     }
-    console.log(`record ${id} edited`);
-  }
+    console.log(`Record ${id} editing`);
+  };
 
   return (
     <Container>
@@ -120,24 +135,27 @@ const ContactForm = () => {
             placeholder="Message"
             fullWidth
           />
-            <Button variant="contained" type="submit" sx={{ marginTop: 2 }}>
-              {isEditing ? "Update" : "Submit"}
-            </Button>
+          <Button variant="contained" type="submit" sx={{ marginTop: 2 }}>
+            {isEditing ? "Update" : "Submit"}
+          </Button>
         </form>
       </Box>
       <Box mt={4}>
         <Typography variant="h5" gutterBottom>Contact List</Typography>
         <List>
           {contacts.map((contact) => (
-              <ListItem key={contact.id}>
-                <ListItemText
-                  primary={`${contact.name} (${contact.email})`}
-                  secondary={contact.message}/>
-                  <IconButton  aria-label="edit" onClick={() => handleEdit(contact.id)}>
-                  <EditIcon />
-                  </IconButton>
-                  <IconButton aria-label="delete" onClick={() => handleDelete(contact.id)}><DeleteIcon /></IconButton>
-                  </ListItem>
+            <ListItem key={contact.id}>
+              <ListItemText
+                primary={`${contact.name} (${contact.email})`}
+                secondary={contact.message}
+              />
+              <IconButton aria-label="edit" onClick={() => handleEdit(contact.id)}>
+                <EditIcon />
+              </IconButton>
+              <IconButton aria-label="delete" onClick={() => handleDelete(contact.id)}>
+                <DeleteIcon />
+              </IconButton>
+            </ListItem>
           ))}
         </List>
       </Box>

@@ -138,7 +138,7 @@ const Header: React.FC = () => {
             variant="contained"
             color="success"
             sx={{mr:2}}
-            onClick={() => handleAuthPage(true)} // Navigate to login
+            onClick={() => handleAuthPage(false)} 
           >
             Register
           </Button>

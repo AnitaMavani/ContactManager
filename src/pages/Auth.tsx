@@ -1,8 +1,10 @@
+import axios from 'axios';
+
 import React, { useState, useEffect } from "react";
 import { Box, TextField, Container, Button, Typography, Link } from "@mui/material";
 import Validation from "./Validation";
 import FormManager from "./FormManager";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 
 type FormState = {
   name?: string;
@@ -14,7 +16,12 @@ type FormState = {
 const Auth = () => {
   //const location = useLocation();
   //const isRegister = location.pathname === "/register";
+  const [error, setError] = useState<string>('');
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const navigate = useNavigate();
   const [isRegister, setIsRegister] = useState(false);
+  const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false);
+  const [userName, setUserName] = useState<string>('');
 
   const initialState:FormState = isRegister
     ? { name: "", email: "", password: "", confirmPassword: "" }
@@ -23,21 +30,78 @@ const Auth = () => {
   const { inputs, errors, handleChange, validate, resetForm } = FormManager(initialState);
   
   useEffect(() => {
-    resetForm(initialState); 
+    resetForm(initialState);
   }, [isRegister]);
-  
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
 
-  const validationErrors = Validation(inputs); // Get validation errors directly
-  const isValid = validate(Validation); 
-
-    if (isValid) {
-        console.log(isRegister ? "Register sucessfull" : "Login Sucessfull", inputs);
-        resetForm(initialState); 
-    } else {
-      console.log("Validation failed:", validationErrors);
+  useEffect(() => {
+    const token = localStorage.getItem('token');
+    if (token) {
+      // Fetch user data using the token
+      axios.get('http://localhost:5001/api/auth/me', {
+        headers: { Authorization: `Bearer ${token}` }
+      })
+        .then(response => {
+          setIsLoggedIn(true);
+          setUserName(response.data.name);
+        })
+        .catch(error => {
+          console.error('❌ Error fetching user data:', error);
+          localStorage.removeItem('token');
+        });
     }
+  }, []);
+  
+  // const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  //   e.preventDefault();
+
+  // const validationErrors = Validation(inputs); // Get validation errors directly
+  // const isValid = validate(Validation); 
+
+  //   if (isValid) {
+  //       console.log(isRegister ? "Register sucessfull" : "Login Sucessfull", inputs);
+  //       resetForm(initialState); 
+  //   } else {
+  //     console.log("Validation failed:", validationErrors);
+  //   }
+  // };
+
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    setError('');
+  
+    if (validate(Validation)) {
+      setIsLoading(true);
+      try {
+        const endpoint = isRegister ? '/register' : '/login';
+        const response = await axios.post(
+          `http://localhost:5001/api/auth${endpoint}`,
+          inputs
+        );
+  
+        console.log(isRegister ? "Registration successful" : "Login successful", response.data);
+        resetForm(initialState);
+  
+        // Redirect or handle post-login logic
+        if (!isRegister) {
+          localStorage.setItem('token', response.data.token);
+          navigate('/'); // Example redirect
+        }
+      } catch (error: any) {
+        setError(error.response?.data?.error || 'Something went wrong');
+        console.error('❌ Auth error:', error);
+      } finally {
+        setIsLoading(false);
+      }
+    } else {
+      console.log("Validation failed:", errors);
+    }
+  };
+
+  const handleLogout = () => {
+    localStorage.removeItem('token');
+    setIsLoggedIn(false);
+    setUserName('');
+    navigate('/'); // Redirect to home or login page
   };
 
   return (
@@ -116,14 +180,34 @@ const Auth = () => {
                 fullWidth
               />
             )}
-            <Button
-              variant="contained"
-              type="submit"
-              sx={{ marginTop: 2}}
-            >
-              {isRegister ? "Register" : "Login"}
-            </Button>
+            {isLoggedIn ? (
+              <Box display="flex" alignItems="center" gap={2}>
+                <Button
+                  variant="contained"
+                  sx={{ marginTop: 2 }}
+                  onClick={handleLogout}
+                >
+                  Logout
+                </Button>
+                <Typography variant="body1">
+                  Welcome, {userName}!
+                </Typography>
+              </Box>
+            ) : (
+              <Button
+                variant="contained"
+                type="submit"
+                sx={{ marginTop: 2 }}
+              >
+                {isRegister ? "Register" : "Login"}
+              </Button>
+            )}
           </form>
+          {error && (
+          <Typography color="error" variant="body2" sx={{ mt: 2 }}>
+            {error}
+          </Typography>
+        )}
           <Typography variant="body2">
             {isRegister ? "Already have an account? " : "New here? "}
             <Link

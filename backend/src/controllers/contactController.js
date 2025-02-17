@@ -7,6 +7,9 @@ exports.getAllContacts = (req, res) => {
         if (err) {
             return res.status(500).json({ error: err.message });
         }
+        else {
+            console.log(results);
+        }
         res.json(results);
     });
 };
