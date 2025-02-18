@@ -1,10 +1,10 @@
 import axios from 'axios';
-
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { Box, TextField, Container, Button, Typography, Link } from "@mui/material";
 import Validation from "./Validation";
 import FormManager from "./FormManager";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+import { AuthContext } from  './AuthContext';
 
 type FormState = {
   name?: string;
@@ -13,15 +13,20 @@ type FormState = {
   confirmPassword?: string;
 };
 
-const Auth = () => {
+type AuthProps = {
+  isRegister: boolean;
+};
+
+const Auth = ({ isRegister }: AuthProps) => {
   //const location = useLocation();
   //const isRegister = location.pathname === "/register";
   const [error, setError] = useState<string>('');
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const navigate = useNavigate();
-  const [isRegister, setIsRegister] = useState(false);
-  const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false);
-  const [userName, setUserName] = useState<string>('');
+  const [isRegisterState, setIsRegisterState] = useState(isRegister);
+  // const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false);
+  // const [userName, setUserName] = useState<string>('');
+  const { login } = useContext(AuthContext);
 
   const initialState:FormState = isRegister
     ? { name: "", email: "", password: "", confirmPassword: "" }
@@ -33,23 +38,22 @@ const Auth = () => {
     resetForm(initialState);
   }, [isRegister]);
 
-  useEffect(() => {
-    const token = localStorage.getItem('token');
-    if (token) {
-      // Fetch user data using the token
-      axios.get('http://localhost:5001/api/auth/me', {
-        headers: { Authorization: `Bearer ${token}` }
-      })
-        .then(response => {
-          setIsLoggedIn(true);
-          setUserName(response.data.name);
-        })
-        .catch(error => {
-          console.error('❌ Error fetching user data:', error);
-          localStorage.removeItem('token');
-        });
-    }
-  }, []);
+  // useEffect(() => {
+  //   const token = localStorage.getItem('token');
+  //   if (token) {
+  //     // Fetch user data using the token
+  //     axios.get('http://localhost:5001/api/auth/me', {
+  //       headers: { Authorization: `Bearer ${token}` }
+  //     })
+  //       .then(response => {
+  //         login(response.data.name); // Update global login state
+  //       })
+  //       .catch(error => {
+  //         console.error('❌ Error fetching user data:', error);
+  //         localStorage.removeItem('token');
+  //       });
+  //   }
+  // }, [login]);
   
   // const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
   //   e.preventDefault();
@@ -74,16 +78,17 @@ const Auth = () => {
       try {
         const endpoint = isRegister ? '/register' : '/login';
         const response = await axios.post(
-          `http://localhost:5001/api/auth${endpoint}`,
+          `http://localhost:5001/api/auth/${endpoint}`,
           inputs
         );
   
-        console.log(isRegister ? "Registration successful" : "Login successful", response.data);
+        console.log(isRegisterState ? "Registration successful" : "Login successful", response.data);
         resetForm(initialState);
   
         // Redirect or handle post-login logic
-        if (!isRegister) {
+        if (!isRegisterState) {
           localStorage.setItem('token', response.data.token);
+          login(response.data.user.name); // Update global login state
           navigate('/'); // Example redirect
         }
       } catch (error: any) {
@@ -97,12 +102,12 @@ const Auth = () => {
     }
   };
 
-  const handleLogout = () => {
-    localStorage.removeItem('token');
-    setIsLoggedIn(false);
-    setUserName('');
-    navigate('/'); // Redirect to home or login page
-  };
+  // const handleLogout = () => {
+  //   localStorage.removeItem('token');
+  //   setIsLoggedIn(false);
+  //   setUserName('');
+  //   navigate('/'); // Redirect to home or login page
+  // };
 
   return (
     <>
@@ -121,10 +126,10 @@ const Auth = () => {
           border={"1px solid #eee"}
         >
           <Typography variant="h4" gutterBottom>
-            {isRegister ? "Register" : "Login"}
+            {isRegisterState ? "Register" : "Login"}
           </Typography>
           <form onSubmit={handleSubmit}>
-            {isRegister && (
+            {isRegisterState && (
               <TextField
                 name="name"
                 value={(inputs.name) || ""}
@@ -165,7 +170,7 @@ const Auth = () => {
               variant="outlined"
               fullWidth
             />
-            {isRegister && (
+            {isRegisterState && (
               <TextField
                 name="confirmPassword"
                 label="Confirm Password"
@@ -180,28 +185,14 @@ const Auth = () => {
                 fullWidth
               />
             )}
-            {isLoggedIn ? (
-              <Box display="flex" alignItems="center" gap={2}>
-                <Button
-                  variant="contained"
-                  sx={{ marginTop: 2 }}
-                  onClick={handleLogout}
-                >
-                  Logout
-                </Button>
-                <Typography variant="body1">
-                  Welcome, {userName}!
-                </Typography>
-              </Box>
-            ) : (
-              <Button
-                variant="contained"
-                type="submit"
-                sx={{ marginTop: 2 }}
-              >
-                {isRegister ? "Register" : "Login"}
-              </Button>
-            )}
+            <Button
+              variant="contained"
+              type="submit"
+              sx={{ mt: 2 }}
+              disabled={isLoading}
+            >
+              {isLoading ? "Loading..." : (isRegister ? "Register" : "Login")}
+            </Button>
           </form>
           {error && (
           <Typography color="error" variant="body2" sx={{ mt: 2 }}>
@@ -209,16 +200,16 @@ const Auth = () => {
           </Typography>
         )}
           <Typography variant="body2">
-            {isRegister ? "Already have an account? " : "New here? "}
+            {isRegisterState ? "Already have an account? " : "New here? "}
             <Link
               component="button"
               variant="body2"
               onClick={() => {
-                setIsRegister((prev) => !prev);
+                setIsRegisterState((prev) => !prev);
                 resetForm(initialState); 
               }}
             >
-              {isRegister ? "Login" : "Register"}
+              {isRegisterState ? "Login" : "Register"}
             </Link>
           </Typography>
         </Box>

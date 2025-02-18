@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { NavLink, useNavigate } from 'react-router-dom';
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
@@ -9,7 +9,7 @@ import Menu from '@mui/material/Menu';
 import MenuIcon from '@mui/icons-material/Menu';
 import Button from '@mui/material/Button';
 import MenuItem from '@mui/material/MenuItem';
-import Auth from './Auth';
+import { AuthContext } from './AuthContext';
 
 const pages = [
   { name: 'Home', path: '/' },
@@ -19,7 +19,9 @@ const pages = [
 
 const Header: React.FC = () => {
   const [anchorElNav, setAnchorElNav] = React.useState<null | HTMLElement>(null);
-  const navigate = useNavigate(); 
+  const navigate = useNavigate();
+  const { isLoggedIn, userName, logout } = useContext(AuthContext);
+
   const handleOpenNavMenu = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorElNav(event.currentTarget);
   };
@@ -28,9 +30,13 @@ const Header: React.FC = () => {
     setAnchorElNav(null);
   };
 
-   // Handle login/register click
-   const handleAuthPage = (isRegister: boolean) => {
+  const handleAuthPage = (isRegister: boolean) => {
     navigate(isRegister ? '/register' : '/login');
+  };
+
+  const handleLogout = () => {
+    logout();
+    navigate('/'); // Redirect to home after logout
   };
 
   return (
@@ -86,19 +92,15 @@ const Header: React.FC = () => {
             {pages.map((page) => (
               <MenuItem
                 key={page.name}
-                component={NavLink}  // Make MenuItem render as NavLink
+                component={NavLink}
                 to={page.path}
                 onClick={handleCloseNavMenu}
                 className='menu-item'
-                // Apply className for active links
-                //className={({ isActive }) => (isActive ? 'active' : '')}
               >
                 {page.name}
               </MenuItem>
             ))}
           </Menu>
-          <div>
-          </div>
         </Box>
 
         {/* Desktop Menu */}
@@ -106,11 +108,9 @@ const Header: React.FC = () => {
           {pages.map((page) => (
             <Button
               key={page.name}
-              component={NavLink}  // Make Button render as NavLink
+              component={NavLink}
               to={page.path}
               className='menu-item'
-              // Apply className for active links
-              //className={({ isActive }) => (isActive ? 'active' : '')}
               sx={{
                 my: 2,
                 color: 'white',
@@ -121,28 +121,43 @@ const Header: React.FC = () => {
             </Button>
           ))}
         </Box>
-        <div>
-        <Button
-            component={NavLink}
-            to="/login"
-            variant="contained"
-            color="success"
-            sx={{mr:2}}
-            onClick={() => handleAuthPage(false)} // Navigate to login
-          >
-            Login
-          </Button>
-          <Button
-            component={NavLink}
-            to="/register"
-            variant="contained"
-            color="success"
-            sx={{mr:2}}
-            onClick={() => handleAuthPage(false)} 
-          >
-            Register
-          </Button>
-          </div>
+
+        {/* Auth Buttons */}
+        {isLoggedIn ? (
+          <Box display="flex" alignItems="center" gap={2}>
+            <Typography variant="body1" sx={{ color: 'white' }}>
+              Welcome, {userName}!
+            </Typography>
+            <Button
+              variant="contained"
+              color="success"
+              onClick={handleLogout}
+            >
+              Logout
+            </Button>
+          </Box>
+        ) : (
+          <Box display="flex" gap={2}>
+            <Button
+              component={NavLink}
+              to="/login"
+              variant="contained"
+              color="success"
+              onClick={() => handleAuthPage(false)}
+            >
+              Login
+            </Button>
+            <Button
+              component={NavLink}
+              to="/register"
+              variant="contained"
+              color="success"
+              onClick={() => handleAuthPage(true)}
+            >
+              Register
+            </Button>
+          </Box>
+        )}
       </Toolbar>
     </AppBar>
   );

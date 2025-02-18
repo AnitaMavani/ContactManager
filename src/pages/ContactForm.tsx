@@ -1,10 +1,11 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { Box, TextField, Container, Button, Typography, List, ListItem, ListItemText, IconButton } from '@mui/material';
 import FormManager from "./FormManager";
 import Validation from "./Validation";
 import DeleteIcon from '@mui/icons-material/Delete';
 import EditIcon from '@mui/icons-material/Edit';
 import axios from 'axios';
+import { AuthContext } from './AuthContext';
 
 type Contact = {
   id: number;
@@ -19,6 +20,7 @@ const ContactForm = () => {
   const [formState, setFormState] = useState<Contact>({ id: 0, ...initialState });
   const [isEditing, setIsEditing] = useState<boolean>(false);
   const [editId, setEditId] = useState<number | null>(null);
+  const { isLoggedIn } = useContext(AuthContext);
 
   const { inputs, errors, handleChange, validate, resetForm, setInputs } = FormManager(initialState);
 
@@ -135,11 +137,12 @@ const ContactForm = () => {
             placeholder="Message"
             fullWidth
           />
-          <Button variant="contained" type="submit" sx={{ marginTop: 2 }}>
+          <Button variant="contained" type="submit" sx={{ mt: 2 }}>
             {isEditing ? "Update" : "Submit"}
           </Button>
         </form>
       </Box>
+      { isLoggedIn && ( 
       <Box mt={4}>
         <Typography variant="h5" gutterBottom>Contact List</Typography>
         <List>
@@ -159,6 +162,7 @@ const ContactForm = () => {
           ))}
         </List>
       </Box>
+      )}
     </Container>
   );
 };
