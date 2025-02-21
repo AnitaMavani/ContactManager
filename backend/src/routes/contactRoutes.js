@@ -18,10 +18,10 @@ router.post('/contacts', (req, res) => {
         [name, email, message],
         (err, results) => {
             if (err) {
-                console.error('❌ Error inserting contact:', err);
+                console.error('Error inserting contact:', err);
                 return res.status(500).json({ error: err.message });
             }
-            console.log('✅ Contact inserted:', results);
+            console.log('Contact inserted:', results);
             res.json({ id: results.insertId, name, email, message });
         }
     );
@@ -31,10 +31,10 @@ router.post('/contacts', (req, res) => {
 router.get('/contacts', (req, res) => {
     db.query('SELECT * FROM contacts', (err, results) => {
         if (err) {
-            console.error('❌ Error fetching contacts:', err);
+            console.error('Error fetching contacts:', err);
             return res.status(500).json({ error: err.message });
         }
-        console.log('✅ Contacts fetched:', results);
+        console.log('Contacts fetched:', results);
         res.json(results);
     });
 });
@@ -49,10 +49,10 @@ router.put('/contacts/:id', (req, res) => {
         [name, email, message, id],
         (err, results) => {
             if (err) {
-                console.error('❌ Error updating contact:', err);
+                console.error('Error updating contact:', err);
                 return res.status(500).json({ error: err.message });
             }
-            console.log('✅ Contact updated:', results);
+            console.log('Contact updated:', results);
             res.json({ id, name, email, message });
         }
     );
@@ -64,10 +64,10 @@ router.delete('/contacts/:id', (req, res) => {
 
     db.query('DELETE FROM contacts WHERE id = ?', [id], (err, results) => {
         if (err) {
-            console.error('❌ Error deleting contact:', err);
+            console.error('Error deleting contact:', err);
             return res.status(500).json({ error: err.message });
         }
-        console.log('✅ Contact deleted:', results);
+        console.log('Contact deleted:', results);
         res.json({ message: 'Contact deleted successfully' });
     });
 });

@@ -10,16 +10,16 @@ const db = mysql.createConnection({
 
 db.connect((err) => {
     if (err) {
-        console.error('❌ Error connecting to MySQL:', err);
+        console.error('Error connecting to MySQL:', err);
     } else {
         console.log('✅ Connected to MySQL database: contact_db');
 
         // Test query to verify the connection
         db.query('SELECT 1 + 1 AS solution', (err, results) => {
             if (err) {
-                console.error('❌ Test query failed:', err);
+                console.error('est query failed:', err);
             } else {
-                console.log('✅ Test query result:', results[0].solution); // Should log "2"
+                console.log('✅ Test query result:', results[0].solution);
             }
         });
     }

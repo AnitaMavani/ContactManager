@@ -49,7 +49,7 @@ const Auth = ({ isRegister }: AuthProps) => {
   //         login(response.data.name); // Update global login state
   //       })
   //       .catch(error => {
-  //         console.error('❌ Error fetching user data:', error);
+  //         console.error('Error fetching user data:', error);
   //         localStorage.removeItem('token');
   //       });
   //   }
@@ -93,7 +93,7 @@ const Auth = ({ isRegister }: AuthProps) => {
         }
       } catch (error: any) {
         setError(error.response?.data?.error || 'Something went wrong');
-        console.error('❌ Auth error:', error);
+        console.error('Auth error:', error);
       } finally {
         setIsLoading(false);
       }

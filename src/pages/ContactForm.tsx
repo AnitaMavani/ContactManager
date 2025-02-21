@@ -34,7 +34,7 @@ const ContactForm = () => {
       const response = await axios.get('http://localhost:5001/api/contacts');
       setContacts(response.data);
     } catch (error) {
-      console.error('❌ Error fetching contacts:', error);
+      console.error('Error fetching contacts:', error);
     }
   };
 
@@ -55,7 +55,7 @@ const ContactForm = () => {
         resetForm(initialState);
         fetchContacts(); // Refresh the contact list
       } catch (error) {
-        console.error('❌ Error submitting contact:', error);
+        console.error('Error submitting contact:', error);
       }
     } else {
       console.log("Validation failed:", errors);
@@ -68,7 +68,7 @@ const ContactForm = () => {
       console.log(`Record ${id} deleted`);
       fetchContacts(); // Refresh the contact list
     } catch (error) {
-      console.error('❌ Error deleting contact:', error);
+      console.error('Error deleting contact:', error);
     }
   };
 
