@@ -31,8 +31,8 @@ Ensure you have the following installed:
 
 1. **Clone the Repository**:
    ```bash
-   git clone <repository_url>
-   cd <repository_name>
+   git clone https://github.com/AnitaMavani/TypeFlowReactMaterial
+   cd TypeFlowReactMaterial
    ```
 
 2. **Install Dependencies**:
@@ -119,7 +119,4 @@ Feel free to fork this repository and create pull requests to enhance its featur
 
 ---
 
-## License
-
-This project is licensed under the MIT License.
 
