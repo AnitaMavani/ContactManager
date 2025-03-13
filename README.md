@@ -1,122 +1,130 @@
-## TypeFlowReactMaterial 
+## TypeFlowReactMaterial
 
-This is a small React application built with TypeScript, Material-UI, and Create React App. It demonstrates basic usage of Material-UI components, React hooks, and TypeScript for type safety. The app currently includes a Contact page, Login, and Register pages, with routing set up for navigation between these pages.
+A full-stack React + TypeScript + Express application with authentication and CRUD operations.
 
-The project uses Material-UI's AppBar for the header design, and each page showcases different Material-UI components integrated with React functionality.
+## Overview
+
+This application allows users to register, log in, and manage contacts. Any users can add the contacts while Authenticated users can add, edit, delete, and list contacts. The frontend is built with React (TypeScript) + Material-UI, while the backend is powered by Node.js + Express.
 
 ---
-
 ## Features
 
-- **React + TypeScript**: A type-safe development environment.
-- **Material-UI Integration**: Modern UI components with customization.
+### Frontend (React + TypeScript)
+
+- **Material-UI Integration**: Styled components for a modern UI.
 - **React Router**: Navigation between multiple pages.
-- **Contact Page**: A form with validation for inputs.
-- **Login and Register Pages**: For authentication
-- **Responsive Design**: Mobile-friendly navigation menu.
+- **Authentication**: User registration and login.
+- **Contacts Page**: Users can add, edit, delete, and list contacts.
+- **Responsive Design**: Works on both mobile and desktop.
 
----
+### Backend (Express + Node.js)
 
-## Installation and Setup
-
-Follow these steps to get the project running locally:
-
-### Prerequisites
-
-Ensure you have the following installed:
-- Node.js (>= 14.x)
-- npm (>= 6.x) or yarn
-
-### Steps
-
-1. **Clone the Repository**:
-   ```bash
-   git clone https://github.com/AnitaMavani/TypeFlowReactMaterial
-   cd TypeFlowReactMaterial
-   ```
-
-2. **Install Dependencies**:
-   Using npm:
-   ```bash
-   npm install
-   ```
-   Or using yarn:
-   ```bash
-   yarn install
-   ```
-
-3. **Start the Development Server**:
-   ```bash
-   npm start
-   ```
-   Or:
-   ```bash
-   yarn start
-   ```
-   The app will be available at `http://localhost:3000`.
-
-4. **Build for Production**:
-   To create an optimized build for deployment:
-   ```bash
-   npm run build
-   ```
-   Or:
-   ```bash
-   yarn build
-   ```
-   The production-ready files will be in the `build` directory.
+- **RESTful API**: Handles user authentication and contact management.
+- **User Authentication**: Uses JWT for secure login sessions.
+- **CRUD Operations**: Contacts can be added, updated, deleted, and retrieved.
+- **Express Middleware**: Uses CORS, body-parser, and authentication middleware.
 
 ---
 
 ## Project Structure
 
 ```
-|-- src
-    |-- components
-        |-- Header.tsx          // Header with AppBar and navigation
-    |-- pages
-        |-- ContactForm.tsx     // Contact page with form validation
-        |-- Auth.tsx           // Login/Register 
-        |-- Register.tsx        // Register page
-        |-- Home.tsx            // Home page
-        |-- About.tsx           // About page
-    |-- App.tsx                 // Main application file with routing
-    |-- index.tsx               // Entry point
+   TypeFlowReactMaterial/
+   │── frontend/ # React + TypeScript + Material-UI
+   │── backend/ # Express.js + Node.js
+   │── package.json # Main package.json for managing frontend & backend
+   │── README.md # Project documentation
 ```
 
----
+**_Frontend (frontend/)_**
 
-## Key Components
+```
+frontend/
+│── node_modules/
+│── public/
+│   ├── assets/
+│   ├── index.html
+│── src/
+│   ├── components/
+│   │   ├── Header.tsx
+│   ├── context/
+│   │   ├── AuthContext.tsx
+│   ├── hooks/
+│   │   ├── useAuth.tsx
+│   │   ├── useForm.tsx
+│   ├── pages/
+│   │   ├── About.tsx
+│   │   ├── Auth.tsx
+│   │   ├── Contact.tsx
+│   │   ├── Home.tsx
+│   ├── routes/
+│   │   ├── routes.tsx
+│   ├── utils/
+│   │   ├── Validation.ts
+│   │   ├── ValidationRules.ts
+│   ├── styles/
+│   │   ├── App.css
+│   │   ├── index.css
+│   ├── App.tsx
+│   ├── index.tsx
+│── package.json
+│── README.md
+```
 
-### Contact Page (`ContactForm.tsx`)
-- Includes a form with inputs for name, email, password, and message.
-- Validates inputs to ensure proper data before submission.
-- Uses Material-UI components like `TextField`, `Box`, and `Button`.
+**_Backend (backend/)_**
 
-### Header (`Header.tsx`)
-- Uses Material-UI's `AppBar`, `Toolbar`, `Button`, and `Menu` components.
-- Provides navigation links to Home, About, Contact, Login, and Register pages.
-- Implements a responsive design for mobile and desktop views.
+```
+backend/
+│── src/
+│   ├── models/         # Database models
+│   ├── routes/         # API routes (contacts, users)
+│   ├── controllers/    # Business logic
+│   ├── middleware/     # Authentication middleware
+│   ├── app.js          # Main Express app
+│── package.json
+│── README.md
+```
 
-### App (`App.tsx`)
-- Sets up routing for all pages using `react-router-dom`.
+## Installation and Setup
 
----
+1. **Clone the Repository**:
+
+   ```bash
+   git clone https://github.com/AnitaMavani/TypeFlowReactMaterial
+   cd TypeFlowReactMaterial
+   ```
+
+2. **Install Dependencies**:
+
+   ```bash
+   npm run install
+   ```
+
+3. **Run the Application**:
+   To start both frontend and backend together:
+
+   ```bash
+   npm start
+   ```
+
+4. **API Endpoints**:
+   -POST /api/auth/register → Register a user
+   -POST /api/auth/login → Login and receive a JWT token
+   -GET /api/contacts → Fetch all contacts (protected)
+   -POST /api/contacts → Add a new contact (protected)
+   -PUT /api/contacts/:id → Edit a contact (protected)
+   -DELETE /api/contacts/:id → Delete a contact (protected)
 
 ## Technologies Used
 
-- **React**
-- **TypeScript**
-- **Material-UI**
-- **React Router**
-- **Create React App**
+**Frontend**:
 
----
+- React(Typescript)
+- Material UI
+- React Router
 
-## Contribution
+**Backend**:
 
-Feel free to fork this repository and create pull requests to enhance its features. Suggestions and improvements are welcome!
-
----
-
-
+- Node.js + Express
+- Material UI
+- React Router
