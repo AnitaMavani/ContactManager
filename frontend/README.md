@@ -1,4 +1,4 @@
-# 📂 Frontend API for Contact Management System
+# 📂 Frontend for Contact Management System
 
 ## ✅ Description
 
