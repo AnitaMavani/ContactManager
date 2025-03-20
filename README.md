@@ -1,12 +1,13 @@
 ## TypeFlowReactMaterial
 
-A full-stack React + TypeScript + Express application with authentication and CRUD operations.
+A full-stack Contact Management System using React + TypeScript + Express application with authentication and CRUD operations.
 
 ## Overview
 
 This application allows users to register, log in, and manage contacts. Any users can add the contacts while Authenticated users can add, edit, delete, and list contacts. The frontend is built with React (TypeScript) + Material-UI, while the backend is powered by Node.js + Express.
 
 ---
+
 ## Features
 
 ### Frontend (React + TypeScript)
@@ -74,15 +75,28 @@ frontend/
 **_Backend (backend/)_**
 
 ```
-backend/
-│── src/
-│   ├── models/         # Database models
-│   ├── routes/         # API routes (contacts, users)
-│   ├── controllers/    # Business logic
-│   ├── middleware/     # Authentication middleware
-│   ├── app.js          # Main Express app
-│── package.json
-│── README.md
+/backend
+│src
+├── config/
+│   └── db.js            # Database connection setup
+├── controllers/
+│   └── contactController.js  # Contact CRUD logic
+│   ├── userController.js     # Authentication logic (register/login)
+├── middleware/
+│   └── authMiddleware.js     # JWT verification middleware
+├── └── contactValidation.js
+├── └── errorHandler.js
+├── models/
+│   ├── userModel.js          # User model queries
+│   └── contactModel.js       # Contact model queries
+├── routes/
+│   └── contactRoutes.js      # Routes for contact APIs
+│   ├── userRoutes.js         # Routes for register & login
+├── app.js                   # Main app setup
+├── server.js                # Express server setup
+├.env                  # Environment variables (DB info, JWT secret)
+├package.json          # Project metadata & dependencies
+└── README.md          # Project documentation
 ```
 
 ## Installation and Setup
@@ -119,12 +133,13 @@ backend/
 
 **Frontend**:
 
-- React(Typescript)
+- React
+- Typescript
 - Material UI
 - React Router
+- Node.js
 
 **Backend**:
 
-- Node.js + Express
-- Material UI
-- React Router
+- Node.js
+- Express.js

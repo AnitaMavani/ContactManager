@@ -6,7 +6,7 @@
   "scripts": {
     "install": "cd frontend && npm install && cd ../backend && npm install",
     "start": "npm run server & npm run client",
-    "server": "cd backend && node src/app.js",
+    "server": "cd backend && node src/server.js",
     "client": "cd frontend && npm start"
   },
   "repository": {

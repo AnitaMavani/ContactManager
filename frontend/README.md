@@ -2,7 +2,7 @@
 
 ## Overview
 
-This is the frontend for the TypeFlowReactMaterial, a full-stack application built with React, TypeScript, and Material-UI. It provides a dynamic user interface for managing contacts with features like add, edit, delete, and view contacts. It also includes user authentication, allowing users to register and log in securely. The application is structured using React Router for seamless navigation between pages such as Contact List, Contact Form, Login, and Register. It is built to be responsive, ensuring optimal use on both mobile and desktop devices.
+This is the frontend for the TypeFlowReactMaterial, a full-stack Contact Management System, built with React, TypeScript, and Material-UI. It provides a dynamic user interface for managing contacts with features like add, edit, delete, and view contacts. It also includes user authentication, allowing users to register and log in securely. The application is structured using React Router for seamless navigation between pages such as Contact List, Contact Form, Login, and Register. It is built to be responsive, ensuring optimal use on both mobile and desktop devices.
 
 ---
 
