@@ -1,6 +1,6 @@
-## Frontend
+# 📂 Frontend API for Contact Management System
 
-## Overview
+## ✅ Description
 
 This is the frontend for the TypeFlowReactMaterial, a full-stack Contact Management System, built with React, TypeScript, and Material-UI. It provides a dynamic user interface for managing contacts with features like add, edit, delete, and view contacts. It also includes user authentication, allowing users to register and log in securely. The application is structured using React Router for seamless navigation between pages such as Contact List, Contact Form, Login, and Register. It is built to be responsive, ensuring optimal use on both mobile and desktop devices.
 
@@ -15,7 +15,7 @@ This is the frontend for the TypeFlowReactMaterial, a full-stack Contact Managem
 - User authentication (Login/Register).
 - Responsive design for mobile and desktop.
 
-## Folder Structure
+## 🚀 Folder Structure
 
 ```
 frontend/
@@ -50,7 +50,13 @@ frontend/
 │── README.md
 ```
 
-## Setup
+## ⚙️ Installation & Setup
+
+1. **Clone the repository**
+
+```bash
+git clone https://github.com/AnitaMavani/TypeFlowReactMaterial/tree/main/frontend
+```
 
 1. **Install Dependencies**:
    Navigate to the `frontend` directory and install the necessary dependencies:
@@ -68,9 +74,7 @@ frontend/
 
 This will start the development server and make the application available at `http://localhost:3000
 
-## Technologies
-
-**Frontend**:
+## 📦 Technologies Used:
 
 - React
 - TypeScript
@@ -90,3 +94,7 @@ This will start the development server and make the application available at `ht
 
 - Handle user authentication.
 - Allows users to register and log in.
+
+## 👨‍💻 Author
+
+Anita Mavani

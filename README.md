@@ -1,8 +1,8 @@
-## TypeFlowReactMaterial
+## 📂 TypeFlowReactMaterial - Contact Management System
 
 A full-stack Contact Management System using React + TypeScript + Express application with authentication and CRUD operations.
 
-## Overview
+## ✅ Overview
 
 This application allows users to register, log in, and manage contacts. Any users can add the contacts while Authenticated users can add, edit, delete, and list contacts. The frontend is built with React (TypeScript) + Material-UI, while the backend is powered by Node.js + Express.
 
@@ -27,7 +27,7 @@ This application allows users to register, log in, and manage contacts. Any user
 
 ---
 
-## Project Structure
+## 🚀 Folder Structure
 
 ```
    TypeFlowReactMaterial/
@@ -99,7 +99,7 @@ frontend/
 └── README.md          # Project documentation
 ```
 
-## Installation and Setup
+## ⚙️ Installation & Setup
 
 1. **Clone the Repository**:
 
@@ -121,15 +121,16 @@ frontend/
    npm start
    ```
 
-4. **API Endpoints**:
-   -POST /api/auth/register → Register a user
-   -POST /api/auth/login → Login and receive a JWT token
-   -GET /api/contacts → Fetch all contacts (protected)
-   -POST /api/contacts → Add a new contact (protected)
-   -PUT /api/contacts/:id → Edit a contact (protected)
-   -DELETE /api/contacts/:id → Delete a contact (protected)
+## 📡 API Endpoints
 
-## Technologies Used
+-POST /api/auth/register → Register a user
+-POST /api/auth/login → Login and receive a JWT token
+-GET /api/contacts → Fetch all contacts (protected)
+-POST /api/contacts → Add a new contact (protected)
+-PUT /api/contacts/:id → Edit a contact (protected)
+-DELETE /api/contacts/:id → Delete a contact (protected)
+
+## 📦 Technologies Used
 
 **Frontend**:
 
@@ -143,3 +144,7 @@ frontend/
 
 - Node.js
 - Express.js
+
+## 👨‍💻 Author
+
+Anita Mavani
