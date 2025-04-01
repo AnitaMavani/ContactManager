@@ -55,7 +55,7 @@ frontend/
 1. **Clone the repository**
 
 ```bash
-git clone https://github.com/AnitaMavani/TypeFlowReactMaterial/tree/main/frontend
+git clone https://github.com/AnitaMavani/ContactManager/frontend
 ```
 
 1. **Install Dependencies**:
