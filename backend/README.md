@@ -45,8 +45,8 @@ This is the backend API for a Contact Management System with authentication (log
 1. **Clone the repository**
 
 ```bash
-git clone https://github.com/AnitaMavani/TypeFlowReactMaterial/tree/main/backend
-cd TypeFlowReactMaterial/backend
+git clone https://github.com/AnitaMavani/ContactManager/backend
+cd ContactManager/backend
 ```
 
 2. **Install dependencies**
