@@ -1,4 +1,4 @@
-## 📂 TypeFlowReactMaterial - Contact Management System
+## 📂 ContactManager - Contact Management System
 
 A full-stack Contact Management System using React + TypeScript + Express application with authentication and CRUD operations.
 
@@ -30,7 +30,7 @@ This application allows users to register, log in, and manage contacts. Any user
 ## 🚀 Folder Structure
 
 ```
-   TypeFlowReactMaterial/
+   ContactManager/
    │── frontend/ # React + TypeScript + Material-UI
    │── backend/ # Express.js + Node.js
    │── package.json # Main package.json for managing frontend & backend
@@ -104,8 +104,8 @@ frontend/
 1. **Clone the Repository**:
 
    ```bash
-   git clone https://github.com/AnitaMavani/TypeFlowReactMaterial
-   cd TypeFlowReactMaterial
+   git clone https://github.com/AnitaMavani/ContactManager
+   cd ContactManager
    ```
 
 2. **Install Dependencies**:
